@@ -15,7 +15,7 @@ the client using a customised DTO.
 
 * Access following url, 
 	
-		http://localhost/api/weather?city={city}&country={country}&apiKey={apiKey}
+		http://localhost:8080/api/weather?city={city}&country={country}&apiKey={apiKey}
 
 #### Features
 
