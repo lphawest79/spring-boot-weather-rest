@@ -63,7 +63,7 @@ Error Response:
 	description: Record not found
 
 URL		
-http://localhost/api/weather?city={city}&country={country}&apiKey={apiKey}
+http://localhost:8080/api/weather?city={city}&country={country}&apiKey={apiKey}
 ```
 
 
