@@ -25,51 +25,48 @@ import au.com.weather.repository.WeatherRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class WeatherServiceTest {
-	
-	@Mock
-	WeatherRepository weatherRepository;
-	
-	@Mock
-	WeatherInfo weatherInfo;
-	
-	@Mock
-	ApiWeatherInfo apiWeatherInfo;
-	
-	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
-	WebClient webClient;
-	
-	@InjectMocks
-	private WeatherServiceImpl weatherService;
-	
-	
-	@Test
-	public void testGetWeatherInfo() {
-		when(weatherRepository.findOneByCityAndCountry("London", "UK"))
-			.thenReturn(null)
-			.thenReturn(weatherInfo);
-		
-		// first call should call the rest api save in the database
-		assertNotNull(weatherService.getWeatherInfo("London", "UK", "12345"));
-		verify(weatherRepository, times(1)).save(any(WeatherInfo.class));
-		verify(webClient, times(1)).get();
-				
-		// second call should NOT call the rest api or save in database
-		assertNotNull(weatherService.getWeatherInfo("London", "UK", "12345"));
-		verify(weatherRepository, times(1)).save(any(WeatherInfo.class));
-		verify(webClient, times(1)).get();
-	}
-	
-	@Test
-	public void testGetWeatherInfo_invokeApiError() {
-		 when(webClient.get()
-                 .uri(any(Function.class))
-                 .retrieve()
-                 .bodyToMono(ApiWeatherInfo.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
-		 
-		 assertThrows(HttpClientErrorException.class, 
-				 () -> {
-					 weatherService.getWeatherInfo("London", "UK", "12345");
-				 });
-	}
+
+    @Mock
+    WeatherRepository weatherRepository;
+
+    @Mock
+    WeatherInfo weatherInfo;
+
+    @Mock
+    ApiWeatherInfo apiWeatherInfo;
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    WebClient webClient;
+
+    @InjectMocks
+    private WeatherServiceImpl weatherService;
+
+    @Test
+    public void testGetWeatherInfo() {
+        when(weatherRepository.findOneByCityAndCountry("London", "UK"))
+            .thenReturn(null)
+            .thenReturn(weatherInfo);
+
+        // first call should call the rest api save in the database
+        assertNotNull(weatherService.getWeatherInfo("London", "UK", "12345"));
+        verify(weatherRepository, times(1)).save(any(WeatherInfo.class));
+        verify(webClient, times(1)).get();
+
+        // second call should NOT call the rest api or save in database
+        assertNotNull(weatherService.getWeatherInfo("London", "UK", "12345"));
+        verify(weatherRepository, times(1)).save(any(WeatherInfo.class));
+        verify(webClient, times(1)).get();
+    }
+
+    @Test
+    public void testGetWeatherInfo_invokeApiError() {
+        when(webClient.get().uri(any(Function.class))
+                .retrieve().bodyToMono(ApiWeatherInfo.class))
+                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+
+        assertThrows(HttpClientErrorException.class, () -> {
+            weatherService.getWeatherInfo("London", "UK", "12345");
+        });
+    }
 
 }

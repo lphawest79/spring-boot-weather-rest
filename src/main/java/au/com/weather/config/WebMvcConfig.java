@@ -9,13 +9,12 @@ import au.com.weather.interceptor.RateLimitHandleInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-	
-	@Autowired
-	RateLimitHandleInterceptor rateLimitInterceptor;
-	
+
+    @Autowired
+    RateLimitHandleInterceptor rateLimitInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimitInterceptor);
     }
 }
-

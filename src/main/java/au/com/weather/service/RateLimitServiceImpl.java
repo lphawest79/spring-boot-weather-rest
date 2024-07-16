@@ -13,16 +13,15 @@ import io.github.bucket4j.Bucket;
 @Service
 public class RateLimitServiceImpl implements RateLimitService {
 
-	
-	@Value("${weather.api.call-limit}")
-	int callLimit;
-	
-	@Value("${weather.api.duration}")
-	int duration;
-	
-	private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+    @Value("${weather.api.call-limit}")
+    int callLimit;
 
-	@Override
+    @Value("${weather.api.duration}")
+    int duration;
+
+    private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+
+    @Override
     public boolean allowRequest(String apiKey) {
         Bucket bucket = buckets.computeIfAbsent(apiKey, this::createNewBucket);
         return bucket.tryConsume(1);
@@ -30,8 +29,8 @@ public class RateLimitServiceImpl implements RateLimitService {
 
     private Bucket createNewBucket(String apiKey) {
         Bandwidth limit = Bandwidth.simple(callLimit, Duration.ofMinutes(duration));
-        
+
         return Bucket.builder().addLimit(limit).build();
     }
-    
+
 }

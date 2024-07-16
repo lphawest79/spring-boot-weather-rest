@@ -14,8 +14,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Entity Weather Info object that stores the json object obstained from openweathermap. 
- * Additionally, city and country attributes are added in to easily search for the records
+ * Entity Weather Info object that stores the json object obstained from
+ * openweathermap. Additionally, city and country attributes are added in to
+ * easily search for the records
  */
 @Data
 @NoArgsConstructor
@@ -23,20 +24,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "WEATHER_INFO")
 public class WeatherInfo {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	private String city;
-	private String country;
-	
-	@JdbcTypeCode(SqlTypes.JSON)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String city;
+    private String country;
+
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
-    private ApiWeatherInfo json; 
-	
-	
-	public WeatherInfo(final String city, final String country, final ApiWeatherInfo json) {
-		this.city = city;
-		this.country = country;
-		this.json = json;
-	}
+    private ApiWeatherInfo json;
+
+    public WeatherInfo(final String city, final String country, final ApiWeatherInfo json) {
+        this.city = city;
+        this.country = country;
+        this.json = json;
+    }
 }

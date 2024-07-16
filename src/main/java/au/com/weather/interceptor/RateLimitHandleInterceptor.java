@@ -13,20 +13,18 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class RateLimitHandleInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private RateLimitService rateLimitService;
+    @Autowired
+    private RateLimitService rateLimitService;
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) 
-		throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
 
-		final String apiKey = request.getParameter("apiKey");
-		
-    	if (apiKey != null && ! rateLimitService.allowRequest(apiKey)) {
-    		throw new HttpClientErrorException(HttpStatus.TOO_MANY_REQUESTS);
-    	}
-		
-		return true;
-	}
+        final String apiKey = request.getParameter("apiKey");
+
+        if (apiKey != null && !rateLimitService.allowRequest(apiKey)) {
+            throw new HttpClientErrorException(HttpStatus.TOO_MANY_REQUESTS);
+        }
+        return true;
+    }
 
 }
